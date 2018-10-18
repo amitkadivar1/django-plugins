@@ -1,16 +1,20 @@
+from django.db import models
 import imp
 import os
 
-from django.db import models
-
 class Plugin(models.Model):
     plugin_file = models.FileField(upload_to='plugins/')
-    active = models.BooleanField()
+    active = models.BooleanField(default=True)
     title = models.CharField(max_length=255, editable=False)
     author = models.CharField(max_length=255, editable=False)
     acts_on = models.CharField(max_length=255, editable=False)
     
-    def __unicode__(self):
+    #if use python 2 then use unicode 
+    # def __unicode__(self):
+    #     return self.title
+    #if use python 3 then use str like this
+    
+    def __str__(self):
         return self.title
     
     def save(self, *args, **kwargs):
@@ -52,3 +56,4 @@ class Plugin(models.Model):
         )
         list_display = ('title', 'author', 'acts_on', 'active')
         list_filter = ('active', 'acts_on')
+        search_fields=('title','author')
